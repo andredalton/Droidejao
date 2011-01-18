@@ -10,3 +10,9 @@ APP
 - pensar em rotação
 - tratar bandex fechado
 
+HOW TO GIT
+- git pull #captura as alteracoes
+- edite os codigos
+- git add <file1> <file2/folder> #marca as suas alteracoes de codigo localmente
+- git commit -m "<mensagem>" #termina as alteracoes de um arquivo e coloca uma mensagem.
+- git push origin master
