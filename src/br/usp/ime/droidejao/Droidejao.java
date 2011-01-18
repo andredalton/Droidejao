@@ -2,6 +2,7 @@ package br.usp.ime.droidejao;
 
 import android.app.Activity;
 import android.os.Bundle;
+import java.net;
 
 public class Droidejao extends Activity
 {
