@@ -27,18 +27,18 @@ public class Droidejao extends Activity
 	private Animation slideLeftOut;
 	private Animation slideRightIn;
     private Animation slideRightOut;
-    private TextView t;
     private GestureDetector gestureDetector;
+    private TextView t;
+    private String strContent = new String();
     View.OnTouchListener gestureListener;
     FileOutputStream out; // declare a file output object
     PrintStream p; // declare a print stream object
+    FileInputStream in;
+    int ch;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        FileInputStream in;
-        int ch;
-        String strContent = new String();
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.linear);
@@ -49,8 +49,10 @@ public class Droidejao extends Activity
         slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
         
         t = (TextView) findViewById(R.id.title);
-        update();
-        // Gesture detection
+
+//          Nao sei se deixo isso comentado:
+//        update();
+
         gestureDetector = new GestureDetector(new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -60,33 +62,15 @@ public class Droidejao extends Activity
                 return false;
             }
         };
-        try {
-            out = openFileOutput("manjuba.txt", MODE_WORLD_READABLE);
-
-	        p = new PrintStream(out);
-	
-	        p.println("Erguidaaaaaaaaaaa!!!");
-
-	        p.close();
-	        out.close();
-        } catch (Exception e) {
-	        strContent = (e + "\n\n");
-        }
-
-        try {
-	        // Open
-	        in = openFileInput("dalton");;
-            while((ch = in.read()) != -1) strContent += ((char)ch);
-	        
-	        in.close();
-        } catch (Exception e) {
-	        strContent = (e + "\n\n");
-            System.err.println ("Error writing to file");
-        }
-        t.setText(strContent);
     }
     
-
+    @Override
+    protected void onResume ()
+    {
+        super.onResume();
+        update();
+    }
+    
     class MyGestureDetector extends SimpleOnGestureListener
     { 
         @Override
@@ -94,7 +78,6 @@ public class Droidejao extends Activity
             try {
                 if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                     return false;
-                // right to left swipe
                 if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                    	findViewById(R.id.pco).startAnimation(slideLeftOut);
                    	findViewById(R.id.central).startAnimation(slideLeftOut);
@@ -119,18 +102,16 @@ public class Droidejao extends Activity
     
     public void update()
     {
- 
+        t = (TextView) findViewById(R.id.title); 
        
         try {
             URL url = new URL("http://www.linux.ime.usp.br/~debonis/droidejao");
             out = openFileOutput("dalton", MODE_PRIVATE);
-	        p = new PrintStream(out);
-	        p.println("Erguidaaaaaaaaaaa!!!");
-
-//            File file = new File("dalton");
 
             URLConnection ucon = url.openConnection();
 
+            strContent = "";
+            
             InputStream is = ucon.getInputStream();
             BufferedInputStream bis = new BufferedInputStream(is);
 
@@ -138,17 +119,20 @@ public class Droidejao extends Activity
             int current = 0;
             while ((current = bis.read()) != -1) baf.append((byte) current);
 
-//            FileOutputStream fos = new FileOutputStream(file);
             out.write(baf.toByteArray());
-            out.close();
-	        p.close();
 	        out.close();
+	        in = openFileInput("dalton");;
+            while((ch = in.read()) != -1) strContent += ((char)ch);
+	        
+	        in.close();
+            t.setText(strContent);
 
         } catch (IOException e) {
             t.setText(e + "\nFUDEL");
+            System.err.println ("Error writing to file");
         } 
+        
     }
     
-
 }
 
