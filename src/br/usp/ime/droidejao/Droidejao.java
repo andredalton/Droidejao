@@ -18,8 +18,16 @@ import java.net.URL;
 import java.net.URLConnection;
 import org.apache.http.util.ByteArrayBuffer;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+
 public class Droidejao extends Activity
 {
+    /* Definindo IDs estaticos pra mensagens, isso e necessario pra matar mensagens ou atualiza-las. */
+    private static final int MSG_ID = 1;
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -105,6 +113,29 @@ public class Droidejao extends Activity
         t = (TextView) findViewById(R.id.title); 
        
         try {
+            // Iniciando notificacao. 
+            String ns = Context.NOTIFICATION_SERVICE;
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
+            
+            int icon = R.drawable.icon;
+            CharSequence tickerText = "Atualizando";
+            long when = System.currentTimeMillis();
+
+            Notification notification = new Notification(icon, tickerText, when);
+
+            Context context = getApplicationContext();
+            CharSequence contentTitle = "Droidejao";
+            CharSequence contentText = "atualizando.";
+
+            Intent notificationIntent = new Intent(this, Droidejao.class);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+            notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+
+            mNotificationManager.notify(MSG_ID, notification);        
+            // Notificacao concluida.
+
+        
             URL url = new URL("http://www.linux.ime.usp.br/~debonis/droidejao");
             out = openFileOutput("dalton", MODE_PRIVATE);
 
@@ -126,6 +157,12 @@ public class Droidejao extends Activity
 	        
 	        in.close();
             t.setText(strContent);
+            
+            //Arregacando uma notificacao definida.
+            mNotificationManager.cancel(MSG_ID);
+            
+            //Arregacando total!!!
+            mNotificationManager.cancelAll();
 
         } catch (IOException e) {
             t.setText(e + "\nFUDEL");
