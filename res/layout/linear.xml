@@ -2,7 +2,23 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent" 
     android:orientation="vertical">
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+            	android:id="@+id/title"
+                android:text="20/12/2012 - Jantar"
+                android:background="#131313"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            />
+    </LinearLayout>
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -13,148 +29,48 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
+            <TextView
+            	android:id="@+id/fisica"
+                android:text="Fisica\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                android:gravity="center_horizontal"
+                android:background="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            />
+            <TextView
+            	android:id="@+id/quimica"
+                android:text="Química\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                android:background="#000000"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            />
         </LinearLayout>    
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-        </LinearLayout> 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-        </LinearLayout> 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-        </LinearLayout> 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-        </LinearLayout> 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-        </LinearLayout> 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
-            <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-                    android:text="ButtonText"/>
+            <TextView
+            	android:id="@+id/central"
+                android:text="Central\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                android:gravity="center_horizontal"
+                android:background="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            />
+            <TextView
+            	android:id="@+id/pco"
+                android:text="COCESP\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                android:background="#000000"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            />
         </LinearLayout> 
     </LinearLayout>
-</LinearLayout>
 </LinearLayout>
