@@ -48,7 +48,8 @@
         />
     </TableRow>
 
-    <TableRow>
+    <TableRow
+        android:layout_column="1">
         <TextView
             android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
             android:gravity="left"
