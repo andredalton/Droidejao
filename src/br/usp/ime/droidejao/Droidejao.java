@@ -29,6 +29,8 @@ import android.content.Intent;
 
 public class Droidejao extends Activity
 {
+    progressBar pb = new progressBar();
+
     /* Definindo IDs estaticos pra mensagens, isso e necessario pra matar mensagens ou atualiza-las. */
     private static final int MSG_ID = 1;
     private static final int SWIPE_MIN_DISTANCE = 120;
