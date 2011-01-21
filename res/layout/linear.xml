@@ -29,48 +29,104 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            <TextView
-            	android:id="@+id/fisica"
-                android:text="Fisica\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
-                android:gravity="center_horizontal"
-                android:background="#000000"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-            />
-            <TextView
-            	android:id="@+id/quimica"
-                android:text="Química\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
-                android:background="#000000"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:text="Fisica"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+                <TextView
+                	android:id="@+id/fisica"
+                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-            />
+                android:layout_weight="1">
+                <TextView
+                    android:text="Quimica"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+                <TextView
+                	android:id="@+id/quimica"
+                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+            </LinearLayout>
         </LinearLayout>    
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            <TextView
-            	android:id="@+id/central"
-                android:text="Central\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
-                android:gravity="center_horizontal"
-                android:background="#000000"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-            />
-            <TextView
-            	android:id="@+id/pco"
-                android:text="COCESP\n\nArroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
-                android:background="#000000"
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_weight="1">
+                <TextView
+                    android:text="Central"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+                <TextView
+                	android:id="@+id/central"
+                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-            />
+                android:layout_weight="1">
+                <TextView
+                    android:text="PCO"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+                <TextView
+                	android:id="@+id/pco"
+                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
+                    android:gravity="center_horizontal"
+                    android:background="#000000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                />
+            </LinearLayout>
         </LinearLayout> 
     </LinearLayout>
 </LinearLayout>
