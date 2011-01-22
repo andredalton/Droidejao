@@ -284,10 +284,16 @@ public class Droidejao extends Activity
             
             // Baixando o timestamp
             downloadFile("http://www.linux.ime.usp.br/~avale/droidejao/timestamp", "timestamp");
-
-            for(int i=0; i<7; i++){
-                for(int j=0; j<4; j++){
-                    boolean alm = false;                
+            
+            // Percorrendo os bandex.
+            for(int j=0; j<4; j++){
+                boolean alm = false;
+                
+                
+                
+                // Percorrendo os dias da semana.
+                for(int i=0; i<7; i++){
+                    // Alternando em almoco e janta.
                     do{
                         // Baixando os arquivos com os cardapios.
                         downloadFile
