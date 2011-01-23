@@ -1,8 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent" 
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/page">
 
+    <!-- Titulo. -->
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -29,6 +31,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+            
+            <!-- Fisica -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
@@ -44,7 +48,6 @@
                 />
                 <TextView
                 	android:id="@+id/fisica"
-                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
                     android:gravity="center_horizontal"
                     android:background="#000000"
                     android:layout_width="wrap_content"
@@ -52,6 +55,8 @@
                     android:layout_weight="1"
                 />
             </LinearLayout>
+            
+            <!-- Quimica -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
@@ -67,7 +72,6 @@
                 />
                 <TextView
                 	android:id="@+id/quimica"
-                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
                     android:gravity="center_horizontal"
                     android:background="#000000"
                     android:layout_width="wrap_content"
@@ -81,6 +85,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+            
+            <!-- Central -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
@@ -96,7 +102,6 @@
                 />
                 <TextView
                 	android:id="@+id/central"
-                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
                     android:gravity="center_horizontal"
                     android:background="#000000"
                     android:layout_width="wrap_content"
@@ -104,6 +109,8 @@
                     android:layout_weight="1"
                 />
             </LinearLayout>
+            
+            <!-- PCO -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
@@ -119,7 +126,6 @@
                 />
                 <TextView
                 	android:id="@+id/pco"
-                    android:text="Arroz/Feijão\nFilé de frango acebolado\nCreme  de espinafre\nSalada de repolho\nMaria mole\nrefresco\n1049kcal"
                     android:gravity="center_horizontal"
                     android:background="#000000"
                     android:layout_width="wrap_content"
