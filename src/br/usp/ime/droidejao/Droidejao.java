@@ -63,6 +63,9 @@ public class Droidejao extends Activity
     private TextView pco;
     private TextView central;
     
+    //URL do servidor.
+    String server_url = "http://www.linux.ime.usp.br/~avale/droidejao/";
+    
     // ???
     View.OnTouchListener gestureListener;
     
@@ -106,7 +109,7 @@ public class Droidejao extends Activity
 
     // Icone, usado nas notificacoes.
     int icon = R.drawable.icon;
-	
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -203,8 +206,8 @@ public class Droidejao extends Activity
         return (gestureDetector.onTouchEvent(event));
     }
     
-    private boolean downloadFile(String path, String fileName){
-        FileOutputStream out;
+    private byte[] downloadTempFile(String path){
+        ByteArrayBuffer baf = new ByteArrayBuffer(50);
         
         try{
             //acesso o arquivo e escrevo no buffer baf
@@ -212,15 +215,40 @@ public class Droidejao extends Activity
             URLConnection ucon = url.openConnection();
             InputStream is = ucon.getInputStream();
             BufferedInputStream bis = new BufferedInputStream(is);
-            ByteArrayBuffer baf = new ByteArrayBuffer(50);
             int current = 0;
             while ((current = bis.read()) != -1) baf.append((byte) current);
-
+            
+            return baf.toByteArray();
+        } catch (IOException e) {
+           return baf.toByteArray();
+        }
+    }
+    
+    private boolean downloadFile(String path, String fileName){
+        FileOutputStream out;
+        
+        try{
+            byte[] buffer = downloadTempFile(path);
+            
             //escreve o buffer no arquivo
             out = openFileOutput(fileName, MODE_PRIVATE);
-            out.write(baf.toByteArray());
+            out.write(buffer);
             out.close();
             
+            return true;
+        } catch (IOException e) {
+           return false;
+        }
+    }
+    
+    private boolean saveFile(String fileName, String content){
+        FileOutputStream out;
+
+        try{
+            out = openFileOutput(fileName, MODE_PRIVATE);
+            out.write(content.getBytes());
+            out.close();
+        
             return true;
         } catch (IOException e) {
            return false;
@@ -263,16 +291,14 @@ public class Droidejao extends Activity
         // Notificacao concluida.
     }
     
-    private void refresh(int dia, boolean refeicao){
-    
-    }
-    
     public void update()
     {
         String strContent = new String();
         
         newNotification("Verificando validade", "Droidejao", "verificando validade.");
-        
+
+/*      
+        /
         // Abrindo o timestamp para verificar a validade dos dados atuais. 
         strContent = fileContents("timestamp");
         
@@ -281,16 +307,29 @@ public class Droidejao extends Activity
         }
         else{
             newNotification("Verificando validade", "Droidejao", "Atualizando." );
-            
+*/
             // Baixando o timestamp
-            downloadFile("http://www.linux.ime.usp.br/~avale/droidejao/timestamp", "timestamp");
-            
+//            downloadFile("http://www.linux.ime.usp.br/~avale/droidejao/timestamp", "timestamp");          
+           
             // Percorrendo os bandex.
             for(int j=0; j<4; j++){
                 boolean alm = false;
+            
+                String hash_temp = downloadTempFile(server_url + bandex[j] + "/hash").toString();
+                String hash = fileContents(bandex[j] + "-hash");
                 
-                
-                
+                newNotification("Verificando validade", hash, hash_temp);
+                /*               
+                // Arquivo diferente. Necessario fazer download.
+                if(hash_temp.compareTo(hash) != 0){
+                    newNotification("Verificando validade - " + bandex[j], "Droidejao", "Atualizando "+ bandex[j] + "." );
+                    
+                    saveFile( bandex[j] + "-hash", hash_temp );
+                }
+                else{
+                    newNotification("Verificando validade - " + bandex[j], "Droidejao", "Atualizado ("+ bandex[j] + ")." );
+                }
+                /*
                 // Percorrendo os dias da semana.
                 for(int i=0; i<7; i++){
                     // Alternando em almoco e janta.
@@ -304,10 +343,10 @@ public class Droidejao extends Activity
                         alm = !alm;
                     } while(alm);
                 }
+                */
             }
-            newNotification("Verificando validade", "Droidejao", "Atualizado." );
-        }
-        
+            //newNotification("Verificando validade", "Droidejao", "Atualizado." );
+//        }
         title.setText( dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar") );
         
         //Arregacando uma notificacao definida.
