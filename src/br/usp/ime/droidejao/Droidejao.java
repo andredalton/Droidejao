@@ -124,7 +124,7 @@ public class Droidejao extends Activity
     {
         
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.linear2);
+        setContentView(R.layout.linear);
   
         // Comecando meus testes aqui (dalton)
         lhide = AnimationUtils.loadAnimation(this, R.anim.left_hide);
@@ -139,9 +139,6 @@ public class Droidejao extends Activity
         pco = (TextView) findViewById(R.id.pco);
         central = (TextView) findViewById(R.id.central);
         page = (LinearLayout) findViewById(R.id.page);
-
-//          Nao sei se deixo isso comentado:
-        
 
         gestureDetector = new GestureDetector(new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
@@ -311,6 +308,11 @@ public class Droidejao extends Activity
         if( quimica.length()==0 ) quimica.setText("Cardapio indisponivel.");
         if( pco.length()==0 ) pco.setText("Cardapio indisponivel.");
         if( central.length()==0 ) central.setText("Cardapio indisponivel.");
+        
+        if( fisica.getText().toString().contains("erro:")) fisica.setText("Erro no cardapio.");
+        if( quimica.getText().toString().contains("erro:")) quimica.setText("Erro no cardapio.");
+        if( pco.getText().toString().contains("erro:")) pco.setText("Erro no cardapio.");
+        if( central.getText().toString().contains("erro:")) central.setText("Erro no cardapio.");
     }
     
     public void update()
