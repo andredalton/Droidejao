@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.BufferedInputStream;
@@ -34,9 +35,9 @@ public class Droidejao extends Activity
 
     // Variaveis estaticas.
     private static final int MSG_ID = 1;
-    private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private static final int SWIPE_MIN_DISTANCE = 60;
+    private static final int SWIPE_MAX_OFF_PATH = 120;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private static final boolean ALMOCO = true;
     private static final boolean JANTAR = false;
     private static final int SEGUNDA = 0;
@@ -52,6 +53,12 @@ public class Droidejao extends Activity
 	private Animation slideLeftOut;
 	private Animation slideRightIn;
     private Animation slideRightOut;
+    
+    private Animation lhide;
+    private Animation lshow;
+    private Animation rhide;
+    private Animation rshow;
+    
 
     // Variavel de captura de movimentos.
     private GestureDetector gestureDetector;
@@ -62,6 +69,8 @@ public class Droidejao extends Activity
     private TextView quimica;
     private TextView pco;
     private TextView central;
+    
+    private LinearLayout page;
     
     //URL do servidor.
     String server_url = "http://www.linux.ime.usp.br/~avale/droidejao/";
@@ -115,21 +124,24 @@ public class Droidejao extends Activity
     {
         
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.linear);
-
-        slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
-        slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
-        slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
-        slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+        setContentView(R.layout.linear2);
+  
+        // Comecando meus testes aqui (dalton)
+        lhide = AnimationUtils.loadAnimation(this, R.anim.left_hide);
+        lshow = AnimationUtils.loadAnimation(this, R.anim.left_show);
+        rhide = AnimationUtils.loadAnimation(this, R.anim.right_hide);
+        rshow = AnimationUtils.loadAnimation(this, R.anim.right_show);
+        
         
         title = (TextView) findViewById(R.id.title);
         fisica = (TextView) findViewById(R.id.fisica);
         quimica = (TextView) findViewById(R.id.quimica);
         pco = (TextView) findViewById(R.id.pco);
         central = (TextView) findViewById(R.id.central);
+        page = (LinearLayout) findViewById(R.id.page);
 
 //          Nao sei se deixo isso comentado:
-        update();
+        
 
         gestureDetector = new GestureDetector(new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
@@ -140,13 +152,8 @@ public class Droidejao extends Activity
                 return false;
             }
         };
-    }
-    
-    @Override
-    protected void onResume ()
-    {
-        super.onResume();
-//        update();
+        
+        update();
     }
     
     class MyGestureDetector extends SimpleOnGestureListener
@@ -157,46 +164,32 @@ public class Droidejao extends Activity
                 if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                     return false;
                     
-                almoco = !almoco;
-                
                 // Swipe pra Esquerda.
-                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    
+                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {                    
+                    almoco = !almoco;
                     if(almoco){
-                        if(dia_atual<6){
-                            dia_atual++;
-                            
-                            // Animacao
-                            findViewById(R.id.pco).startAnimation(slideLeftOut);
-                           	findViewById(R.id.central).startAnimation(slideLeftOut);
-                           	findViewById(R.id.fisica).startAnimation(slideLeftOut);
-                           	findViewById(R.id.quimica).startAnimation(slideLeftOut);
-                        }
-                        else{
-                            almoco = !almoco;
-                        }
+                        if(dia_atual<6) dia_atual++;
+                        else almoco = !almoco;
                     }
+                    
+                    page.startAnimation(lshow);
+                    loadContext();
                 }
                 // Swipe pra Direita.
                 else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                   	almoco = !almoco;
                    	if(!almoco){
-                       	if(dia_atual>0){
-                            dia_atual--;
-                            
-                            // Animacao
-                            findViewById(R.id.pco).startAnimation(slideRightOut);
-                           	findViewById(R.id.central).startAnimation(slideRightOut);
-                           	findViewById(R.id.fisica).startAnimation(slideRightOut);
-                           	findViewById(R.id.quimica).startAnimation(slideRightOut);
-                        }
-                        else{
-                            almoco = !almoco;
-                        }
+                       	if(dia_atual>0) dia_atual--;
+                        else almoco = !almoco;
                     }
-             }
-             title.setText( dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar") );
+                    
+                    page.startAnimation(rshow);
+                    loadContext();
+                }
             } catch (Exception e) {
+            
             }
+            
             return false;
         }
     }
@@ -206,6 +199,7 @@ public class Droidejao extends Activity
         return (gestureDetector.onTouchEvent(event));
     }
     
+    // Funcionando.
     private byte[] downloadTempFile(String path){
         ByteArrayBuffer baf = new ByteArrayBuffer(50);
         
@@ -224,6 +218,7 @@ public class Droidejao extends Activity
         }
     }
     
+    // Funcionando.
     private boolean downloadFile(String path, String fileName){
         FileOutputStream out;
         
@@ -255,6 +250,7 @@ public class Droidejao extends Activity
         }
     }
     
+    // Funcionando.
     private String fileContents(String name){
         FileInputStream in;
         String tmp = "";
@@ -291,69 +287,85 @@ public class Droidejao extends Activity
         // Notificacao concluida.
     }
     
+    private void cancelNotifications(){
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
+        
+        //Arregacando uma notificacao definida.
+        mNotificationManager.cancel(MSG_ID);
+        
+        //Arregacando total!!!
+        //mNotificationManager.cancelAll(); 
+        
+    }
+
+    public void loadContext(){
+        title.setText( dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar") );
+
+        fisica.setText( fileContents("fisica" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
+        quimica.setText( fileContents("quimica" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
+        central.setText( fileContents("central" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
+        pco.setText( fileContents("pco" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
+        
+        if( fisica.length()==0 ) fisica.setText("Cardapio indisponivel.");
+        if( quimica.length()==0 ) quimica.setText("Cardapio indisponivel.");
+        if( pco.length()==0 ) pco.setText("Cardapio indisponivel.");
+        if( central.length()==0 ) central.setText("Cardapio indisponivel.");
+    }
+    
     public void update()
     {
         String strContent = new String();
         
         newNotification("Verificando validade", "Droidejao", "verificando validade.");
 
-/*      
-        /
-        // Abrindo o timestamp para verificar a validade dos dados atuais. 
-        strContent = fileContents("timestamp");
-        
-        if( strContent.compareTo(Long.toString(timestamp)) > 0 ){
-            newNotification("Verificando validade", "Droidejao", "Atualizado. " );
-        }
-        else{
-            newNotification("Verificando validade", "Droidejao", "Atualizando." );
-*/
-            // Baixando o timestamp
-//            downloadFile("http://www.linux.ime.usp.br/~avale/droidejao/timestamp", "timestamp");          
-           
-            // Percorrendo os bandex.
-            for(int j=0; j<4; j++){
-                boolean alm = false;
+        // Percorrendo os bandex.
+        for(int j=0; j<4; j++){
+            // Abrindo o timestamp para verificar a validade dos dados atuais. 
+            strContent = fileContents(bandex[j] + "-timestamp");
             
-                String hash_temp = downloadTempFile(server_url + bandex[j] + "/hash").toString();
+            if(strContent.contains("erro:")) strContent = "0";
+            
+            // Desatualizado.
+            if( strContent.compareTo(Long.toString(timestamp)) < 0 ){
+                String hash_temp = new String(downloadTempFile(server_url + bandex[j] + "/hash"));
                 String hash = fileContents(bandex[j] + "-hash");
                 
-                newNotification("Verificando validade", hash, hash_temp);
-                /*               
-                // Arquivo diferente. Necessario fazer download.
                 if(hash_temp.compareTo(hash) != 0){
-                    newNotification("Verificando validade - " + bandex[j], "Droidejao", "Atualizando "+ bandex[j] + "." );
+                    newNotification("Verificando validade", "Droidejao (" + bandex[j] + ")", "Recolhendo dados." );
                     
+                    // Percorrendo os dias da semana.
+                    for(int i=0; i<7; i++){
+                        boolean alm = false;
+                        
+                        // Alternando em almoco e janta.
+                        do{
+                            // Baixando os arquivos com os cardapios.
+                            downloadFile
+                            (
+                                server_url + bandex[j] + (alm ? "/almoco/" : "/jantar/") + dias[i],
+                                bandex[j] + "-" + (alm ? "almoco-" : "jantar-") + dias[i]
+                            );
+                            alm = !alm;
+                        } while(alm);
+                    }
+                    
+                    downloadFile(server_url + bandex[j] + "/timestamp", bandex[j] + "-timestamp");
                     saveFile( bandex[j] + "-hash", hash_temp );
                 }
                 else{
-                    newNotification("Verificando validade - " + bandex[j], "Droidejao", "Atualizado ("+ bandex[j] + ")." );
+                    newNotification("Verificando validade", "Droidejao (" + bandex[j] + ")", "Servidor desatualizado." );
                 }
-                /*
-                // Percorrendo os dias da semana.
-                for(int i=0; i<7; i++){
-                    // Alternando em almoco e janta.
-                    do{
-                        // Baixando os arquivos com os cardapios.
-                        downloadFile
-                        (
-                            "http://www.linux.ime.usp.br/~avale/droidejao/" + "droidejao-" + bandex[j] + "-" + (alm ? "almoco-" : "jantar-") + dias[i],
-                            "droidejao-" + bandex[j] + "-" + (alm ? "almoco-" : "jantar-") + dias[i]
-                        );
-                        alm = !alm;
-                    } while(alm);
-                }
-                */
             }
-            //newNotification("Verificando validade", "Droidejao", "Atualizado." );
-//        }
-        title.setText( dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar") );
+            // Arquivos validos, esta tudo bem agora. 
+            else{
+                newNotification("Verificando validade", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp );
+            }
+        }
+
+        loadContext();
         
-        //Arregacando uma notificacao definida.
-        //mNotificationManager.cancel(MSG_ID);
-        
-        //Arregacando total!!!
-        //mNotificationManager.cancelAll(); 
+        cancelNotifications();
     }    
 }
 
