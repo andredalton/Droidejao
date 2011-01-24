@@ -30,9 +30,6 @@ import android.content.Intent;
 
 public class Droidejao extends Activity
 {
-    // Ainda sendo desenvolvido.
-    progressBar progress = new progressBar();
-
     // Variaveis estaticas.
     private static final int MSG_ID = 1;
     private static final int SWIPE_MIN_DISTANCE = 60;
