@@ -36,7 +36,7 @@ public class Droidejao extends Activity
     private static final int SWIPE_MAX_OFF_PATH = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private static final boolean ALMOCO = true;
-    private static final boolean JANTAR = false;
+    private static final boolean janta = false;
     private static final int SEGUNDA = 0;
     private static final int TERCA = 1;
     private static final int QUARTA = 2;
@@ -61,11 +61,12 @@ public class Droidejao extends Activity
     private TextView quimica;
     private TextView pco;
     private TextView central;
+    private TextView bandexText[] = {fisica, quimica, pco, central};
     
     private LinearLayout page;
     
     //URL do servidor.
-    String server_url = "http://www.linux.ime.usp.br/~avale/droidejao/";
+    String server_url = "http://www.linux.ime.usp.br/~debonis/droidejao/";
     
     // ???
     View.OnTouchListener gestureListener;
@@ -96,7 +97,9 @@ public class Droidejao extends Activity
         "pco",
         "central"
     };
-
+    
+    private int bg[] = new int[4];
+    
     private String dias[] = new String[]
     {  
         "segunda-feira",
@@ -129,18 +132,19 @@ public class Droidejao extends Activity
         rhide = AnimationUtils.loadAnimation(this, R.anim.right_hide);
         rshow = AnimationUtils.loadAnimation(this, R.anim.right_show);
         
-        if( fileContents("autoupdate").compareTo("0") == 0)
+        if(fileContents("autoupdate").compareTo("0") == 0)
             auto = false;
         else
             auto = true;
         
         title = (TextView) findViewById(R.id.title);
-        fisica = (TextView) findViewById(R.id.fisica);
-        quimica = (TextView) findViewById(R.id.quimica);
-        pco = (TextView) findViewById(R.id.pco);
-        central = (TextView) findViewById(R.id.central);
+        bandexText[0] = fisica = (TextView) findViewById(R.id.fisica);
+        bandexText[1] = quimica = (TextView) findViewById(R.id.quimica);
+        bandexText[2] = pco = (TextView) findViewById(R.id.pco);
+        bandexText[3] = central = (TextView) findViewById(R.id.central);
         page = (LinearLayout) findViewById(R.id.page);
-
+        
+        
         gestureDetector = new GestureDetector(new MyGestureDetector());
         gestureListener = new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -151,7 +155,7 @@ public class Droidejao extends Activity
             }
         };
         
-        if(auto) update();
+        if(auto) update(true);
         
         loadContext();
     }
@@ -180,7 +184,7 @@ public class Droidejao extends Activity
                 // Launch the DeviceListActivity to see devices and do scan
                 
                 deleteAllFiles();
-                update();
+                update(false);
                 
                 return true;
             case R.id.auto:
@@ -343,34 +347,37 @@ public class Droidejao extends Activity
         
     }
 
-    public void loadContext(){
-        title.setText( dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar") );
+    public void loadContext() {
+        title.setText(dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar"));
 
-        fisica.setText( fileContents("fisica" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
-        quimica.setText( fileContents("quimica" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
-        central.setText( fileContents("central" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
-        pco.setText( fileContents("pco" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
+        fisica.setText(fileContents("fisica" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
+        quimica.setText(fileContents("quimica" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
+        central.setText(fileContents("central" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
+        pco.setText(fileContents("pco" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
         
-        if( fisica.length()==0 ) fisica.setText("FECHADO");
-        if( quimica.length()==0 ) quimica.setText("FECHADO");
-        if( pco.length()==0 ) pco.setText("FECHADO");
-        if( central.length()==0 ) central.setText("FECHADO");
+        if(fisica.length() == 0) fisica.setText("FECHADO");
+        if(quimica.length() == 0) quimica.setText("FECHADO");
+        if(pco.length() == 0) pco.setText("FECHADO");
+        if(central.length() == 0) central.setText("FECHADO");
         
-        if( fisica.getText().toString().contains("erro:")) fisica.setText("Erro no cardapio.");
-        if( quimica.getText().toString().contains("erro:")) quimica.setText("Erro no cardapio.");
-        if( pco.getText().toString().contains("erro:")) pco.setText("Erro no cardapio.");
-        if( central.getText().toString().contains("erro:")) central.setText("Erro no cardapio.");
+        if(fisica.getText().toString().contains("erro:")) fisica.setText("Erro no cardapio.");
+        if(quimica.getText().toString().contains("erro:")) quimica.setText("Erro no cardapio.");
+        if(pco.getText().toString().contains("erro:")) pco.setText("Erro no cardapio.");
+        if(central.getText().toString().contains("erro:")) central.setText("Erro no cardapio.");
     }
     
     private void deleteAllFiles(){
         Context context = getApplicationContext();
-        
         
         String[] list = context.fileList();
         
         String protect[] = new String[]
         {
             "server",
+            "pco-hash",
+            "central-hash",
+            "fisica-hash",
+            "quimica-hash",
             "autoupdate",
             ".",
             ".."
@@ -385,57 +392,59 @@ public class Droidejao extends Activity
 	            }
             }
             
-            if(flag) context.deleteFile(list[j]);
+//            if(flag) context.deleteFile(list[j]);
         }
     }
     
-    public void update()
+    public void update(boolean verificarValidade)
     {
         String strContent = new String();
         
-        newNotification("Verificando validade", "Droidejao", "verificando validade.");
+        if (verificarValidade == true) newNotification("Verificando validade", "Droidejao", "verificando validade.");
 
         // Percorrendo os bandex.
-        for(int j=0; j<4; j++){
-            // Abrindo o timestamp para verificar a validade dos dados atuais. 
+        for(int j = 0; j < 4; j++){
+            // Abrindo o timestamp para verificar a validade dos dados atuais.
             strContent = fileContents(bandex[j] + "-timestamp");
             
             if(strContent.contains("erro:")) strContent = "0";
             
             // Desatualizado.
-            if( strContent.compareTo(Long.toString(timestamp)) < 0 ){
+            if(strContent.compareTo(Long.toString(timestamp)) < 0 || verificarValidade == false) {
                 String hash_temp = new String(downloadTempFile(server_url + bandex[j] + "/hash"));
                 String hash = fileContents(bandex[j] + "-hash");
                 
-                if(hash_temp.compareTo(hash) != 0){
-                    newNotification("Verificando validade", "Droidejao (" + bandex[j] + ")", "Recolhendo dados." );
+                if ((hash_temp.compareTo(hash) != 0) || (hash.substring(0, 4).compareTo("erro") == 0)) {
+                    bandexText[j].setBackgroundResource(R.color.green);
                     
                     // Percorrendo os dias da semana.
-                    for(int i=0; i<7; i++){
+                    for (int i = 0; i < 7; i++){
                         boolean alm = false;
                         
                         // Alternando em almoco e janta.
-                        do{
+                        do {
                             // Baixando os arquivos com os cardapios.
-                            downloadFile
-                            (
+                            downloadFile (
                                 server_url + bandex[j] + (alm ? "/almoco/" : "/janta/") + dias[i],
-                                bandex[j] + "-" + (alm ? "almoco-" : "jantar-") + dias[i]
+                                bandex[j] + "-" + (alm ? "almoco-" : "janta-") + dias[i]
                             );
                             alm = !alm;
-                        } while(alm);
+                        } while (alm);
                     }
                     
                     downloadFile(server_url + bandex[j] + "/timestamp", bandex[j] + "-timestamp");
-                    saveFile( bandex[j] + "-hash", hash_temp );
+                    saveFile(bandex[j] + "-hash", hash_temp);
+                    strContent = fileContents(bandex[j] + "-hash");
+                } else {
+                    bandexText[j].setBackgroundResource(R.color.red);
+                    bg[j] = 0x330000;
                 }
-                else{
-                    newNotification("Verificando validade", "Droidejao (" + bandex[j] + ")", "Servidor desatualizado." );
-                }
+                newNotification("Sincronizacao completa", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp);
             }
             // Arquivos validos, esta tudo bem agora. 
             else{
-                newNotification("Verificando validade", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp );
+                newNotification("Cardapio ainda valido", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp);
+                bg[j] = 0x003300;
             }
         }
 
