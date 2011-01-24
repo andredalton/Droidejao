@@ -49,11 +49,6 @@ public class Droidejao extends Activity
     private static final int DOMINGO = 6;
 
     // Animacoes.
-	private Animation slideLeftIn;
-	private Animation slideLeftOut;
-	private Animation slideRightIn;
-    private Animation slideRightOut;
-    
     private Animation lhide;
     private Animation lshow;
     private Animation rhide;
@@ -118,6 +113,11 @@ public class Droidejao extends Activity
 
     // Icone, usado nas notificacoes.
     int icon = R.drawable.icon;
+    int check = R.drawable.check;
+    int uncheck = R.drawable.uncheck;
+
+    // Guarda se o aplicativo pode se auto-atualizar ou nao
+    private boolean auto = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -132,6 +132,10 @@ public class Droidejao extends Activity
         rhide = AnimationUtils.loadAnimation(this, R.anim.right_hide);
         rshow = AnimationUtils.loadAnimation(this, R.anim.right_show);
         
+        if( fileContents("autoupdate").compareTo("0") == 0)
+            auto = false;
+        else
+            auto = true;
         
         title = (TextView) findViewById(R.id.title);
         fisica = (TextView) findViewById(R.id.fisica);
@@ -150,7 +154,53 @@ public class Droidejao extends Activity
             }
         };
         
-        update();
+        if(auto) update();
+        
+        loadContext();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        
+        inflater.inflate(R.menu.option_menu, menu);
+    
+        // O metodo getItem pega o item pela ordem, comecando de 0.
+        // Seleciona qual icone sera mostrado no menu de opcoes.
+        MenuItem item = menu.getItem(1);
+        if(auto)    item.setIcon(check);
+        else        item.setIcon(uncheck);
+        
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        MenuInflater inflater = getMenuInflater();
+        
+        switch (item.getItemId()) {
+            case R.id.reload:
+                // Launch the DeviceListActivity to see devices and do scan
+                
+                deleteAllFiles();
+                update();
+                
+                return true;
+            case R.id.auto:
+                auto = !auto;
+                
+                if(auto){
+                    item.setIcon(check);
+                    saveFile("autoupdate", "1");
+                }
+                else{
+                    item.setIcon(uncheck);
+                    saveFile("autoupdate", "0");
+                }
+                
+                return true;
+        }
+        return false;
     }
     
     class MyGestureDetector extends SimpleOnGestureListener
@@ -304,15 +354,42 @@ public class Droidejao extends Activity
         central.setText( fileContents("central" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
         pco.setText( fileContents("pco" + (almoco ? "-almoco-": "-jantar-") + dias[dia_atual]) );
         
-        if( fisica.length()==0 ) fisica.setText("Cardapio indisponivel.");
-        if( quimica.length()==0 ) quimica.setText("Cardapio indisponivel.");
-        if( pco.length()==0 ) pco.setText("Cardapio indisponivel.");
-        if( central.length()==0 ) central.setText("Cardapio indisponivel.");
+        if( fisica.length()==0 ) fisica.setText("FECHADO");
+        if( quimica.length()==0 ) quimica.setText("FECHADO");
+        if( pco.length()==0 ) pco.setText("FECHADO");
+        if( central.length()==0 ) central.setText("FECHADO");
         
         if( fisica.getText().toString().contains("erro:")) fisica.setText("Erro no cardapio.");
         if( quimica.getText().toString().contains("erro:")) quimica.setText("Erro no cardapio.");
         if( pco.getText().toString().contains("erro:")) pco.setText("Erro no cardapio.");
         if( central.getText().toString().contains("erro:")) central.setText("Erro no cardapio.");
+    }
+    
+    private void deleteAllFiles(){
+        Context context = getApplicationContext();
+        
+        
+        String[] list = context.fileList();
+        
+        String protect[] = new String[]
+        {
+            "server",
+            "autoupdate",
+            ".",
+            ".."
+        };
+        
+        for(int j=0; j<list.length; j++){
+            boolean flag = true;
+            for(int i = 0; i < protect.length; i++) {
+	            if(list[j].equals(protect[i])) {
+	                flag = false;
+	                break;
+	            }
+            }
+            
+            if(flag) context.deleteFile(list[j]);
+        }
     }
     
     public void update()
@@ -345,7 +422,7 @@ public class Droidejao extends Activity
                             // Baixando os arquivos com os cardapios.
                             downloadFile
                             (
-                                server_url + bandex[j] + (alm ? "/almoco/" : "/jantar/") + dias[i],
+                                server_url + bandex[j] + (alm ? "/almoco/" : "/janta/") + dias[i],
                                 bandex[j] + "-" + (alm ? "almoco-" : "jantar-") + dias[i]
                             );
                             alm = !alm;
@@ -365,8 +442,6 @@ public class Droidejao extends Activity
             }
         }
 
-        loadContext();
-        
         cancelNotifications();
     }    
 }
