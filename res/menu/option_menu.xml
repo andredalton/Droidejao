@@ -4,6 +4,7 @@
     <item android:id="@+id/reload"
           android:icon="@drawable/reload"
           android:title="@string/reload" />
+          
     <item android:id="@+id/auto"
           android:icon="@drawable/check"
           android:title="@string/auto" />

@@ -418,9 +418,6 @@ public class Droidejao extends Activity
             if(strContent.compareTo(Long.toString(timestamp)) < 0 || !verificarValidade) {
                 String hash_temp = new String(downloadTempFile(server_url + bandex[j] + "/hash"));
                 String hash = fileContents(bandex[j] + "-hash");
-                
-                newNotification("Teste 1", hash_temp, hash);
-                
                 if ((hash_temp.compareTo(hash) != 0) || (hash.substring(0, 4).compareTo("erro") == 0)) {
                     // Percorrendo os dias da semana.
                     for (int i = 0; i < 7; i++){
@@ -439,9 +436,8 @@ public class Droidejao extends Activity
                     
                     downloadFile(server_url + bandex[j] + "/timestamp", bandex[j] + "-timestamp");
                     saveFile(bandex[j] + "-hash", hash_temp);
-                    strContent = fileContents(bandex[j] + "-hash");
                 }
-                newNotification("Sincronizacao completa", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp);
+                newNotification("Sincronizacao completa", "Droidejao (" + bandex[j] + ")", "Atualizado.");
             }
             // Arquivos validos, esta tudo bem agora. 
         }
