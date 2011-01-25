@@ -28,6 +28,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import android.text.Html;
+
 public class Droidejao extends Activity
 {
     // Variaveis estaticas.
@@ -44,7 +46,7 @@ public class Droidejao extends Activity
     private static final int SEXTA = 4;
     private static final int SABADO = 5;
     private static final int DOMINGO = 6;
-
+    private static final int TOTAL_BANDEX = 4;
     // Animacoes.
     private Animation lhide;
     private Animation lshow;
@@ -66,7 +68,7 @@ public class Droidejao extends Activity
     private LinearLayout page;
     
     //URL do servidor.
-    String server_url = "http://www.linux.ime.usp.br/~debonis/droidejao/";
+    String server_url = "http://www.linux.ime.usp.br/~avale/droidejao/";
     
     // ???
     View.OnTouchListener gestureListener;
@@ -92,13 +94,13 @@ public class Droidejao extends Activity
 
     private String bandex[] = new String[]
     {  
-        "quimica",
         "fisica",
+        "quimica",
         "pco",
         "central"
     };
     
-    private int bg[] = new int[4];
+    private int backGround[] = new int[4];
     
     private String dias[] = new String[]
     {  
@@ -183,7 +185,6 @@ public class Droidejao extends Activity
             case R.id.reload:
                 // Launch the DeviceListActivity to see devices and do scan
                 
-                deleteAllFiles();
                 update(false);
                 
                 return true;
@@ -349,21 +350,29 @@ public class Droidejao extends Activity
 
     public void loadContext() {
         title.setText(dias_semana[dia_atual] + " - " + (almoco ? "Almoco": "Jantar"));
+        String prefixo;
+        String sufixo;
 
-        fisica.setText(fileContents("fisica" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
-        quimica.setText(fileContents("quimica" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
-        central.setText(fileContents("central" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
-        pco.setText(fileContents("pco" + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]));
-        
-        if(fisica.length() == 0) fisica.setText("FECHADO");
-        if(quimica.length() == 0) quimica.setText("FECHADO");
-        if(pco.length() == 0) pco.setText("FECHADO");
-        if(central.length() == 0) central.setText("FECHADO");
-        
-        if(fisica.getText().toString().contains("erro:")) fisica.setText("Erro no cardapio.");
-        if(quimica.getText().toString().contains("erro:")) quimica.setText("Erro no cardapio.");
-        if(pco.getText().toString().contains("erro:")) pco.setText("Erro no cardapio.");
-        if(central.getText().toString().contains("erro:")) central.setText("Erro no cardapio.");
+        for(int i=0; i<TOTAL_BANDEX; i++){
+            String content = fileContents( bandex[i] + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]);
+            
+            if( fileContents( bandex[i]+"-timestamp").compareTo(Long.toString(timestamp)) < 0 ){
+                prefixo = "<font color=\"#252525\">";
+                sufixo = "</font>";
+            }
+            else{
+                prefixo = "";
+                sufixo = "";
+            }
+            
+            
+            if( content.contains("erro:") )
+                bandexText[i].setText( Html.fromHtml(prefixo+"Erro no cardapio."+sufixo));
+            else if( content.length()==0 )
+                bandexText[i].setText( Html.fromHtml(prefixo+"FECHADO"+sufixo) );
+            else
+                bandexText[i].setText( Html.fromHtml(prefixo+content+sufixo) );
+        }
     }
     
     private void deleteAllFiles(){
@@ -374,10 +383,6 @@ public class Droidejao extends Activity
         String protect[] = new String[]
         {
             "server",
-            "pco-hash",
-            "central-hash",
-            "fisica-hash",
-            "quimica-hash",
             "autoupdate",
             ".",
             ".."
@@ -392,7 +397,7 @@ public class Droidejao extends Activity
 	            }
             }
             
-//            if(flag) context.deleteFile(list[j]);
+            if(flag) context.deleteFile(list[j]);
         }
     }
     
@@ -410,13 +415,13 @@ public class Droidejao extends Activity
             if(strContent.contains("erro:")) strContent = "0";
             
             // Desatualizado.
-            if(strContent.compareTo(Long.toString(timestamp)) < 0 || verificarValidade == false) {
+            if(strContent.compareTo(Long.toString(timestamp)) < 0 || !verificarValidade) {
                 String hash_temp = new String(downloadTempFile(server_url + bandex[j] + "/hash"));
                 String hash = fileContents(bandex[j] + "-hash");
                 
+                newNotification("Teste 1", hash_temp, hash);
+                
                 if ((hash_temp.compareTo(hash) != 0) || (hash.substring(0, 4).compareTo("erro") == 0)) {
-                    bandexText[j].setBackgroundResource(R.color.green);
-                    
                     // Percorrendo os dias da semana.
                     for (int i = 0; i < 7; i++){
                         boolean alm = false;
@@ -435,17 +440,10 @@ public class Droidejao extends Activity
                     downloadFile(server_url + bandex[j] + "/timestamp", bandex[j] + "-timestamp");
                     saveFile(bandex[j] + "-hash", hash_temp);
                     strContent = fileContents(bandex[j] + "-hash");
-                } else {
-                    bandexText[j].setBackgroundResource(R.color.red);
-                    bg[j] = 0x330000;
                 }
                 newNotification("Sincronizacao completa", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp);
             }
             // Arquivos validos, esta tudo bem agora. 
-            else{
-                newNotification("Cardapio ainda valido", "Droidejao (" + bandex[j] + ")" + strContent, "Atualizado." + timestamp);
-                bg[j] = 0x003300;
-            }
         }
 
         cancelNotifications();
