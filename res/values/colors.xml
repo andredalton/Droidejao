@@ -3,4 +3,16 @@
     <color name="black">#ff000000</color>
     <color name="green">#ff002200</color>
     <color name="red">#ff220000</color>
+
+    <!-- Cores de campos especificos -->
+    <!-- Titulo -->
+    <color name="title">#ffffffff</color>
+    <color name="title_back">#ff181818</color>
+    
+    <!-- Demais campos -->
+    <color name="title_all">#ffffffff</color>
+    <color name="title_all_back">#ff101010</color>
+    <color name="background">#ff000000</color>
+    <color name="text">#ffffffff</color>
+    <color name="text_outdate">#ff202020</color>
 </resources>

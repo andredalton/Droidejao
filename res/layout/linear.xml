@@ -11,7 +11,8 @@
             android:layout_height="wrap_content">
             <TextView
             	android:id="@+id/title"
-                android:background="#181818"
+            	android:textColor="@color/title"
+                android:background="@color/title_back"
                 android:gravity="center_horizontal|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:background="#101010"
+                android:background="@color/title_all_back"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:width="1px"
@@ -48,16 +49,18 @@
                 android:layout_weight="1">
                 <TextView
                     android:text="Fisica"
+                    android:textColor="@color/title_all"
+                    android:background="@color/title_all_back"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:gravity="center_horizontal|center_vertical"
-                    android:background="#101010"
                     android:paddingTop="4px"
                     android:paddingBottom="4px"
                 />
                 <TextView
                 	android:id="@+id/fisica"
+                    android:background="@color/background"
                     android:gravity="center_horizontal|center_vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
@@ -71,7 +74,7 @@
             </LinearLayout>
             
             <TextView
-                    android:background="#101010"
+                    android:background="@color/title_all_back"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:width="1px"
@@ -84,12 +87,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
+                    android:textColor="@color/title"
                     android:text="Quimica"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:gravity="center_horizontal|center_vertical"
-                    android:background="#101010"
+                    android:background="@color/title_all_back"
                     android:paddingTop="4px"
                     android:paddingBottom="4px"
 
@@ -105,11 +109,12 @@
                     android:paddingLeft="4px"
                     android:paddingRight="4px"
                     android:minHeight="200px"
+                    android:background="@color/background"
                 />
             </LinearLayout>
 
             <TextView
-                android:background="#101010"
+                android:background="@color/title_all_back"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:width="1px"
@@ -122,9 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-
             <TextView
-                android:background="#101010"
+                android:background="@color/title_all_back"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:width="1px"
@@ -138,12 +142,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
+                    android:textColor="@color/title"
                     android:text="Central"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:gravity="center_horizontal|center_vertical"
-                    android:background="#101010"
+                    android:background="@color/title_all_back"
                     android:paddingTop="4px"
                     android:paddingBottom="4px"
                 />
@@ -158,12 +163,13 @@
                     android:paddingLeft="4px"
                     android:paddingRight="4px"
                     android:minHeight="200px"
+                    android:background="@color/background"
                 />
                 
             </LinearLayout>
 
             <TextView
-                android:background="#101010"
+                android:background="@color/title_all_back"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:width="1px"
@@ -177,12 +183,13 @@
                 android:layout_weight="1">
                 
                 <TextView
+                    android:textColor="@color/title"
                     android:text="PCO"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:gravity="center_horizontal|center_vertical"
-                    android:background="#101010"
+                    android:background="@color/title_all_back"
                     android:paddingTop="4px"
                     android:paddingBottom="4px"
                 />
@@ -198,12 +205,13 @@
                     android:paddingLeft="4px"
                     android:paddingRight="4px"
                     android:minHeight="200px"
+                    android:background="@color/background"
                 />
                                 
             </LinearLayout>
             
             <TextView
-                android:background="#101010"
+                android:background="@color/title_all_back"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:width="1px"
@@ -213,7 +221,7 @@
     </LinearLayout>
         
     <TextView
-        android:background="#101010"
+        android:background="@color/title_all_back"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:height="1px"

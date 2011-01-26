@@ -15,7 +15,7 @@
             </intent-filter>
         </activity>s
         <activity android:name=".Help"
-                  android:label="HELPA"
+                  android:label="@string/help"
                   android:screenOrientation="portrait">
         </activity>
         

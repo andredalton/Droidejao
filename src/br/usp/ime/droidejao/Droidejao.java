@@ -170,7 +170,7 @@ public class Droidejao extends Activity
     
         // O metodo getItem pega o item pela ordem, comecando de 0.
         // Seleciona qual icone sera mostrado no menu de opcoes.
-        MenuItem item = menu.getItem(1);
+        MenuItem item = menu.getItem(3);
         if(auto)    item.setIcon(check);
         else        item.setIcon(uncheck);
         
@@ -182,11 +182,10 @@ public class Droidejao extends Activity
         MenuInflater inflater = getMenuInflater();
         
         switch (item.getItemId()) {
+            case R.id.help:
+                startActivity(new Intent(this, Help.class));
             case R.id.reload:
-                // Launch the DeviceListActivity to see devices and do scan
-                
                 update(false);
-                
                 return true;
             case R.id.auto:
                 auto = !auto;
@@ -199,7 +198,6 @@ public class Droidejao extends Activity
                     item.setIcon(uncheck);
                     saveFile("autoupdate", "0");
                 }
-                
                 return true;
         }
         return false;
@@ -356,13 +354,14 @@ public class Droidejao extends Activity
         for(int i=0; i<TOTAL_BANDEX; i++){
             String content = fileContents( bandex[i] + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]);
             
-            if( fileContents( bandex[i]+"-timestamp").compareTo(Long.toString(timestamp)) < 0 ){
-                prefixo = "<font color=\"#252525\">";
+            if(fileContents( bandex[i]+"-timestamp").compareTo(Long.toString(timestamp)) < 0){
+            //if(Long.getLong(fileContents(bandex[i]+"-timestamp"), 0) < timestamp){
+                prefixo = "<font color=\"#202020\">";
                 sufixo = "</font>";
             }
             else{
-                prefixo = "";
-                sufixo = "";
+                prefixo = "<font color=\"#DEDEDE\">";
+                sufixo = "</font>";
             }
             
             
