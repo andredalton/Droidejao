@@ -18,6 +18,10 @@
                   android:label="@string/help"
                   android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Info"
+                  android:label="@string/info"
+                  android:screenOrientation="portrait">
+        </activity>
         
     </application>
 </manifest> 

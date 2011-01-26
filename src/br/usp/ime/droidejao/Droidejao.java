@@ -184,6 +184,10 @@ public class Droidejao extends Activity
         switch (item.getItemId()) {
             case R.id.help:
                 startActivity(new Intent(this, Help.class));
+                return true;
+            case R.id.info:
+                startActivity(new Intent(this, Info.class));
+                return true;
             case R.id.reload:
                 update(false);
                 return true;
@@ -364,13 +368,12 @@ public class Droidejao extends Activity
                 sufixo = "</font>";
             }
             
-            
             if( content.contains("erro:") )
                 bandexText[i].setText( Html.fromHtml(prefixo+"Erro no cardapio."+sufixo));
             else if( content.length()==0 )
                 bandexText[i].setText( Html.fromHtml(prefixo+"FECHADO"+sufixo) );
             else
-                bandexText[i].setText( Html.fromHtml(prefixo+content+sufixo) );
+                bandexText[i].setText( Html.fromHtml(prefixo+content.replace("\n", "<br>")+sufixo) );
         }
     }
     
