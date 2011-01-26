@@ -220,7 +220,10 @@ public class Droidejao extends Activity
                     almoco = !almoco;
                     if(almoco){
                         if(dia_atual<6) dia_atual++;
-                        else almoco = !almoco;
+                        else{
+                            almoco = !almoco;
+                            return false;
+                       }
                     }
                     
                     page.startAnimation(lshow);
@@ -231,7 +234,10 @@ public class Droidejao extends Activity
                    	almoco = !almoco;
                    	if(!almoco){
                        	if(dia_atual>0) dia_atual--;
-                        else almoco = !almoco;
+                        else{
+                            almoco = !almoco;
+                            return false;
+                        }
                     }
                     
                     page.startAnimation(rshow);
