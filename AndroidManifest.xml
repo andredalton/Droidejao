@@ -6,13 +6,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         
-        <activity android:name="Droidejao"
+        <activity android:name=".Droidejao"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>s
+        <activity android:name=".Help"
+                  android:label="HELPA"
+                  android:screenOrientation="portrait">
         </activity>
         
     </application>
