@@ -37,8 +37,6 @@ public class Droidejao extends Activity
     private static final int SWIPE_MIN_DISTANCE = 60;
     private static final int SWIPE_MAX_OFF_PATH = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
-    private static final boolean ALMOCO = true;
-    private static final boolean janta = false;
     private static final int SEGUNDA = 0;
     private static final int TERCA = 1;
     private static final int QUARTA = 2;
@@ -68,17 +66,17 @@ public class Droidejao extends Activity
     private LinearLayout page;
     
     //URL do servidor.
-    String server_url = "http://www.linux.ime.usp.br/~avale/droidejao/";
+    String server_url = "http://www.linux.ime.usp.br/~debonis/droidejao/";
     
     // ???
     View.OnTouchListener gestureListener;
     
     // Variaveis de controle de data.
-    private Calendar anow = Calendar.getInstance();                                                 // Data para comparacao do timestamp.
-    private long timestamp = anow.getTimeInMillis() / 1000;                                         // Timestamp em segundos.
-    private int hoje = (7+anow.get(Calendar.DAY_OF_WEEK)-anow.getFirstDayOfWeek ())%7; 	
-    private int dia_atual = hoje;
-    private boolean almoco = (anow.get(Calendar.HOUR) < 15 || anow.get(Calendar.HOUR) > 20);
+    private Calendar anow = Calendar.getInstance(); // Data para comparacao do timestamp.
+    private long timestamp = anow.getTimeInMillis() / 1000; // Timestamp em segundos.
+    private int hoje = (anow.get(Calendar.DAY_OF_WEEK)-anow.getFirstDayOfWeek()-1); 	
+    private boolean almoco =  (anow.get(Calendar.HOUR_OF_DAY) < 14 || anow.get(Calendar.HOUR_OF_DAY) > 20);
+    private int dia_atual = (hoje + ((anow.get(Calendar.HOUR_OF_DAY) > 20)? 1 : 0)) % 7;
 
     // Arrays de Strings.
     private String dias_semana[] = new String[]
@@ -157,7 +155,7 @@ public class Droidejao extends Activity
             }
         };
         
-        if(auto) update(true);
+        if (auto) update(true);
         
         loadContext();
     }
@@ -295,7 +293,6 @@ public class Droidejao extends Activity
     
     private boolean saveFile(String fileName, String content){
         FileOutputStream out;
-
         try{
             out = openFileOutput(fileName, MODE_PRIVATE);
             out.write(content.getBytes());
@@ -361,51 +358,23 @@ public class Droidejao extends Activity
         String prefixo;
         String sufixo;
 
-        for(int i=0; i<TOTAL_BANDEX; i++){
+        for(int i = 0; i < TOTAL_BANDEX; i++){
             String content = fileContents( bandex[i] + (almoco ? "-almoco-": "-janta-") + dias[dia_atual]);
             
-            if(fileContents( bandex[i]+"-timestamp").compareTo(Long.toString(timestamp)) < 0){
+            if (fileContents(bandex[i]+"-timestamp").compareTo(Long.toString(timestamp)) < 0) {
             //if(Long.getLong(fileContents(bandex[i]+"-timestamp"), 0) < timestamp){
                 prefixo = "<font color=\"#202020\">";
-                sufixo = "</font>";
-            }
-            else{
+            } else {
                 prefixo = "<font color=\"#DEDEDE\">";
-                sufixo = "</font>";
             }
+            sufixo = "</font>";
             
-            if( content.contains("erro:") )
+            if (content.contains("erro:"))
                 bandexText[i].setText( Html.fromHtml(prefixo+"Erro no cardapio."+sufixo));
-            else if( content.length()==0 )
-                bandexText[i].setText( Html.fromHtml(prefixo+"FECHADO"+sufixo) );
+            else if (content.length() == 0)
+                bandexText[i].setText(Html.fromHtml(prefixo+"FECHADO"+sufixo));
             else
-                bandexText[i].setText( Html.fromHtml(prefixo+content.replace("\n", "<br>")+sufixo) );
-        }
-    }
-    
-    private void deleteAllFiles(){
-        Context context = getApplicationContext();
-        
-        String[] list = context.fileList();
-        
-        String protect[] = new String[]
-        {
-            "server",
-            "autoupdate",
-            ".",
-            ".."
-        };
-        
-        for(int j=0; j<list.length; j++){
-            boolean flag = true;
-            for(int i = 0; i < protect.length; i++) {
-	            if(list[j].equals(protect[i])) {
-	                flag = false;
-	                break;
-	            }
-            }
-            
-            if(flag) context.deleteFile(list[j]);
+                bandexText[i].setText(Html.fromHtml(prefixo+content.replace("\n", "<br>")+sufixo));
         }
     }
     
@@ -415,25 +384,25 @@ public class Droidejao extends Activity
         
         if (verificarValidade == true) newNotification("Verificando validade", "Droidejao", "verificando validade.");
 
-        // Percorrendo os bandex.
-        for(int j = 0; j < 4; j++){
+        // Percorrendo os bandex
+        for (int j = 0; j < 4; j++) {
             // Abrindo o timestamp para verificar a validade dos dados atuais.
             strContent = fileContents(bandex[j] + "-timestamp");
             
-            if(strContent.contains("erro:")) strContent = "0";
+            if (strContent.contains("erro:")) strContent = "0";
             
-            // Desatualizado.
-            if(strContent.compareTo(Long.toString(timestamp)) < 0 || !verificarValidade) {
+            // Desatualizado
+            if (strContent.compareTo(Long.toString(timestamp)) < 0 || !verificarValidade) {
                 String hash_temp = new String(downloadTempFile(server_url + bandex[j] + "/hash"));
                 String hash = fileContents(bandex[j] + "-hash");
-                if ((hash_temp.compareTo(hash) != 0) || (hash.substring(0, 4).compareTo("erro") == 0)) {
-                    // Percorrendo os dias da semana.
-                    for (int i = 0; i < 7; i++){
+                if ((hash_temp.compareTo(hash) != 0) || (hash.substring(0, 4).compareTo("erro") == 0) || !verificarValidade) {
+                    // Percorrendo os dias da semana
+                    for (int i = 0; i < 7; i++) {
                         boolean alm = false;
                         
-                        // Alternando em almoco e janta.
+                        // Alternando em almoco e janta
                         do {
-                            // Baixando os arquivos com os cardapios.
+                            // Baixando os arquivos com os cardapios
                             downloadFile (
                                 server_url + bandex[j] + (alm ? "/almoco/" : "/janta/") + dias[i],
                                 bandex[j] + "-" + (alm ? "almoco-" : "janta-") + dias[i]

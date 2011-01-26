@@ -2,6 +2,7 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent" 
     android:orientation="vertical"
+    android:stretchColumns="0"
     android:id="@+id/page">
 
     <!-- Titulo. -->
@@ -47,6 +48,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
+               <ScrollView android:id="@+id/scroll_fisica" android:layout_height="fill_parent" android:layout_width="fill_parent">
                 <TextView
                     android:text="Fisica"
                     android:textColor="@color/title_all"
@@ -58,6 +60,7 @@
                     android:paddingTop="4px"
                     android:paddingBottom="4px"
                 />
+                </ScrollView>
                 <TextView
                 	android:id="@+id/fisica"
                     android:background="@color/background"
@@ -98,6 +101,7 @@
                     android:paddingBottom="4px"
 
                 />
+               <ScrollView android:id="@+id/scroll_fisica" android:layout_height="fill_parent" android:layout_width="fill_parent">
                 <TextView
                 	android:id="@+id/quimica"
                     android:gravity="center_horizontal|center_vertical"
@@ -111,6 +115,7 @@
                     android:minHeight="200px"
                     android:background="@color/background"
                 />
+            </ScrollView>                                
             </LinearLayout>
 
             <TextView
@@ -152,6 +157,7 @@
                     android:paddingTop="4px"
                     android:paddingBottom="4px"
                 />
+               <ScrollView android:id="@+id/scroll_fisica" android:layout_height="fill_parent" android:layout_width="fill_parent">
                 <TextView
                 	android:id="@+id/central"
                     android:gravity="center_horizontal|center_vertical"
@@ -165,6 +171,7 @@
                     android:minHeight="200px"
                     android:background="@color/background"
                 />
+            </ScrollView>                                
                 
             </LinearLayout>
 
@@ -184,7 +191,7 @@
                 
                 <TextView
                     android:textColor="@color/title"
-                    android:text="PCO"
+                    android:text="COCESP"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
@@ -194,7 +201,8 @@
                     android:paddingBottom="4px"
                 />
                 
-                <TextView
+               <ScrollView android:id="@+id/scroll_fisica" android:layout_height="fill_parent" android:layout_width="fill_parent">
+               <TextView
                 	android:id="@+id/pco"
                     android:gravity="center_horizontal|center_vertical"
                     android:layout_width="fill_parent"
@@ -207,7 +215,7 @@
                     android:minHeight="200px"
                     android:background="@color/background"
                 />
-                                
+            </ScrollView>                                
             </LinearLayout>
             
             <TextView

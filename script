@@ -5,6 +5,7 @@ use Text::Unidecode;
 use HTML::Strip;
 
 $hs = HTML::Strip->new();
+@days = ("SEGUNDA-FEIRA", "TERCA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SABADO", "DOMINGO");
 
 %url = ("central" => "http://www.usp.br/coseas/cardapio.html",
         "fisica"  => "http://www.usp.br/coseas/cardapiofisica.html",
@@ -58,7 +59,6 @@ foreach $bandex(keys %url)
     $clean_text =~ s/\n +/\n/g;
     
     @lines = unidecode(split(/\n/, $clean_text));
-    @days = ("SEGUNDA-FEIRA", "TERCA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SABADO", "DOMINGO");
     for $i (0..$#lines) {
         if (grep {$_ eq $lines[$i]} @days) {
             $dia = lc($lines[$i]);
@@ -67,7 +67,7 @@ foreach $bandex(keys %url)
             } else {
                 open (FILE, ">droidejao/$bandex/janta/$dia") or die $!;
             } 
-            @cardapio = get_cardapio(@lines, $i, $days[i+1]);
+            @cardapio = get_cardapio(@lines, $i);
             print_cardapio(@cardapio, FILE);
             close FILE;
         }
@@ -81,11 +81,20 @@ foreach $bandex(keys %url)
    `date --date="next monday" +%s > droidejao/${bandex}/timestamp`;
 }
 
-sub get_cardapio(@lines, $i, $nextday)   
+sub get_cardapio(@lines, $i)   
 {
+    my $day = 0;
     my @card = [];
-    while (not ($lines[$i] =~ /kcal/ or $lines[$i] =~ /$nextday/)) {
-        push @card, $lines[++$i];
+    while (not ($lines[$i] =~ /kcal/)) {
+        if (grep {$_ eq $lines[$i]} @days) {
+            if ($day) {
+                return @card;
+            }
+            $day++;
+        } else {
+            push @card, $lines[$i];
+        }
+        ++$i;
         return [] if not $lines[$i];
     }
     return @card;
