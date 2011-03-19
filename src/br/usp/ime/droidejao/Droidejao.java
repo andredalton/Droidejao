@@ -66,7 +66,7 @@ public class Droidejao extends Activity
     private LinearLayout page;
     
     //URL do servidor.
-    String server_url = "http://www.linux.ime.usp.br/~debonis/droidejao/";
+    String server_url = "http://www.linux.ime.usp.br/~avale/droidejao/";
     
     // ???
     View.OnTouchListener gestureListener;
@@ -74,7 +74,7 @@ public class Droidejao extends Activity
     // Variaveis de controle de data.
     private Calendar anow = Calendar.getInstance(); // Data para comparacao do timestamp.
     private long timestamp = anow.getTimeInMillis() / 1000; // Timestamp em segundos.
-    private int hoje = (anow.get(Calendar.DAY_OF_WEEK)-anow.getFirstDayOfWeek()-1); 	
+    private int hoje = (anow.get(Calendar.DAY_OF_WEEK)-anow.getFirstDayOfWeek()); 	
     private boolean almoco =  (anow.get(Calendar.HOUR_OF_DAY) < 14 || anow.get(Calendar.HOUR_OF_DAY) > 20);
     private int dia_atual = (hoje + ((anow.get(Calendar.HOUR_OF_DAY) > 20)? 1 : 0)) % 7;
 
