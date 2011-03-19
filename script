@@ -3,7 +3,9 @@
 use utf8;
 use Text::Unidecode;
 use HTML::Strip;
+use File::stat;
 
+$max_tam = 200;
 $hs = HTML::Strip->new();
 @days = ("SEGUNDA-FEIRA", "TERCA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SABADO", "DOMINGO");
 
@@ -76,6 +78,14 @@ foreach $bandex(keys %url)
         $dia_lc = lc($dia);
         `touch droidejao/$bandex/almoco/$dia_lc`;
         `touch droidejao/$bandex/janta/$dia_lc`;
+        if( $max_tam < stat("droidejao/".$bandex."/almoco/".$dia_lc)->size ){
+            `echo cardapio invalido > droidejao/$bandex/almoco/$dia_lc`;
+            print "\ndroidejao/".$bandex."/almoco/".$dia_lc."\n";
+        }
+        if($max_tam < stat("droidejao/".$bandex."/janta/".$dia_lc)->size){
+            `echo cardapio invalido > droidejao/$bandex/janta/$dia_lc`;
+            print "\ndroidejao/".$bandex."/janta/".$dia_lc."\n";
+        }
     }
     print ": $bandex atualizado.\n\n";
    `date --date="next monday" +%s > droidejao/${bandex}/timestamp`;
